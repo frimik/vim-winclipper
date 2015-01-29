@@ -13,6 +13,8 @@ On the windows host, clone this repository and run:
     
 or as appropriate depending on what shell you're using.
 
+Oh, and it might fail or just not be as "informative" unless you install [Growl for Windows](http://www.growlforwindows.com/gfw/)
+
 ### Linux VM
 
 If you're using [Vundle](https://github.com/gmarik/Vundle.vim), add to your `.vimrc` on your Linux VM and run `:PluginInstall`

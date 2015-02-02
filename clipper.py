@@ -8,22 +8,44 @@ import time
 import logging
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+import hashlib
 
 
 class ClipboardingEventHandler(FileSystemEventHandler):
+
     """Growl the events captured."""
+
+    clip_digest = None
 
     def __init__(self, vimregister_filename='vimregister.txt'):
         self.vimregister_filename = vimregister_filename
 
-    @staticmethod
-    def populate_clipboard(src_path):
+    def copy_and_notify(self, clip):
+        pyperclip.copy(clip)
+        gntp.notifier.mini(
+            "Copied %d characters to the clipboard" % len(clip),)
+
+    def populate_clipboard(self, src_path):
         try:
             with open(src_path, "r") as file:
-                clip = file.read()
-                pyperclip.copy(clip.replace('\n', '\r\n'))
-                gntp.notifier.mini(
-                    "Copied %d characters to the clipboard" % len(clip),)
+                clip = file.read().replace('\n', '\r\n')  # DOS linebreaks ...
+                clip_digest = hashlib.md5(clip)
+                # non-threaded hack to get rid of duplicate copies and
+                # notifications... TODO if you copy a string from vim, and
+                # overwrite the windows clipboard with something else locally,
+                # and again copy an identical string from vim - it won't get
+                # copied again ...
+                if not self.__class__.clip_digest:
+                    self.__class__.clip_digest = clip_digest
+                    logging.info("Initializing the clip digest")
+                    self.copy_and_notify(clip)
+                elif (clip_digest.digest() ==
+                      self.__class__.clip_digest.digest()
+                      ):
+                    logging.warning("Duplicate clip digest. Not copying.")
+                else:
+                    self.__class__.clip_digest = clip_digest
+                    self.copy_and_notify(clip)
         except IOError as e:
             logging.error("Error: %r", e)
             return

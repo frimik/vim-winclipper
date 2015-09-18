@@ -8,6 +8,8 @@ After you yank something in vim, you can use the command `:WriteRegister` to wri
 
 ## Usage
 
+If you're on a *Windows Host* and you use a *Vagrant VM* with Linux on it, this might be for you... any other setup? All bets are off ...
+
 ### Windows Host
 
 On the windows host, clone this repository and run:
@@ -17,7 +19,10 @@ On the windows host, clone this repository and run:
     
 or as appropriate depending on what shell you're using.
 
-Oh, and it might fail or just not be as "informative" unless you install [Growl for Windows](http://www.growlforwindows.com/gfw/)
+Obviously, this requires python on your Windows host...
+
+Oh, and it might fail or just not be as "informative" unless you install [Growl for Windows](http://www.growlforwindows.com/gfw/). If you try this without Growl, Let me know, will ya?
+If you do use Growl you will get a desktop notification telling you how many characters were just copied to your clipboard ...
 
 ### Linux VM
 

@@ -2,6 +2,10 @@
 
 Simple hack to get vim register (clipboard) data from vim in your Linux VM to your Windows Clipboard on your Host.
 
+## How it works
+
+After you yank something in vim, you can use the command `:WriteRegister` to write a file to your `/vagrant` share ..., then a persistant python process on your windows host (that you need to start yourself) listens to filesystem events on that particular file and smashes it into your windows clipboard...
+
 ## Usage
 
 ### Windows Host
